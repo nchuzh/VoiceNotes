@@ -7,9 +7,6 @@ import android.util.AttributeSet
 import android.view.View
 import android.animation.ValueAnimator
 import android.view.animation.LinearInterpolator
-import android.R.attr.animationDuration
-import android.R.animator
-
 
 
 /**
@@ -20,14 +17,32 @@ class RoundView : View {
     private var path = Path()
     private val paint = Paint()
     private lateinit var animator: ValueAnimator
+    private val defaultDuration = 800 //default duration
+    private var animationDuration: Long = defaultDuration.toLong()
 
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attr: AttributeSet) : super(context, attr)
-    constructor(context: Context, attr: AttributeSet, defStyle: Int) : super(context, attr, defStyle)
+    constructor(context: Context) : super(context) {
+        init(null)
+    }
+
+    constructor(context: Context, attr: AttributeSet) : super(context, attr) {
+        init(attr)
+    }
+
+    constructor(context: Context, attr: AttributeSet, defStyle: Int) : super(context, attr, defStyle) {
+        init(attr)
+    }
+
+    private fun init(attrs: AttributeSet?) {
+        if (attrs != null) {
+            val attrsArray = context.obtainStyledAttributes(attrs, R.styleable.RoundView)
+            animationDuration = attrsArray.getInt(R.styleable.RoundView_animation_duration, defaultDuration).toLong()
+            attrsArray.recycle()
+        }
+    }
 
     init {
         animator = ValueAnimator.ofFloat(0f, 1f)
-        animator.setDuration(1000)
+        animator.setDuration(animationDuration)
         animator.setInterpolator(LinearInterpolator())
         animator.setRepeatMode(ValueAnimator.REVERSE)
         animator.setRepeatCount(ValueAnimator.INFINITE)
