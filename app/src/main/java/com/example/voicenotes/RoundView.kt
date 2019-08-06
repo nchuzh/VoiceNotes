@@ -34,21 +34,23 @@ class RoundView : View {
 
     private fun init(attrs: AttributeSet?) {
         if (attrs != null) {
-            val attrsArray = context.obtainStyledAttributes(attrs, R.styleable.RoundView)
-            animationDuration = attrsArray.getInt(R.styleable.RoundView_animation_duration, defaultDuration).toLong()
-            attrsArray.recycle()
+            context.obtainStyledAttributes(attrs, R.styleable.RoundView).apply {
+                animationDuration = getInt(R.styleable.RoundView_animation_duration, defaultDuration).toLong()
+                recycle()
+            }
         }
     }
 
     init {
-        animator = ValueAnimator.ofFloat(0f, 1f)
-        animator.setDuration(animationDuration)
-        animator.setInterpolator(LinearInterpolator())
-        animator.setRepeatMode(ValueAnimator.REVERSE)
-        animator.setRepeatCount(ValueAnimator.INFINITE)
-        animator.addUpdateListener(ValueAnimator.AnimatorUpdateListener {
-            alpha = it.animatedValue as Float
-        })
+        animator = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = animationDuration
+            interpolator = LinearInterpolator()
+            repeatMode = ValueAnimator.REVERSE
+            repeatCount = ValueAnimator.INFINITE
+            addUpdateListener {
+                alpha = it.animatedValue as Float
+            }
+        }
     }
 
     fun startAnimation() {
@@ -57,18 +59,21 @@ class RoundView : View {
 
     override fun draw(canvas: Canvas) {
         paint.isAntiAlias = true
-        canvas.drawPath(path, paint)
-        canvas.save()
-        canvas.clipPath(path)
-        super.draw(canvas)
-        canvas.restore()
+        with (canvas) {
+            drawPath(path, paint)
+            save()
+            clipPath(path)
+            super.draw(this)
+            restore()
+        }
     }
 
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
-        path = Path()
-        path.addCircle((width / 2).toFloat(), (height / 2).toFloat(), (width / 2).toFloat(), Path.Direction.CW)
-        path.close()
+        path = Path(). apply {
+            addCircle((width / 2).toFloat(), (height / 2).toFloat(), (width / 2).toFloat(), Path.Direction.CW)
+            close()
+        }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
