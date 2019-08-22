@@ -13,4 +13,4 @@ Screen #3
 Screen with a list of all saved notes with options Delete/Share/Publish
 
 Screen #4
-Setting screen where user can manage their Twitter account to be able to publish notes there.
+Setting screen where user can manage their Pastebin account to be able to publish notes there.
