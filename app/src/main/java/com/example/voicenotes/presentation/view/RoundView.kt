@@ -1,5 +1,4 @@
-package com.example.voicenotes
-
+package com.example.voicenotes.presentation.view
 
 import android.content.Context
 import android.graphics.*
@@ -7,7 +6,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.animation.ValueAnimator
 import android.view.animation.LinearInterpolator
-
+import com.example.voicenotes.R
 
 /**
  * Round shaped view with blink animation
@@ -16,7 +15,7 @@ class RoundView : View {
 
     private var path = Path()
     private val paint = Paint()
-    private lateinit var animator: ValueAnimator
+    private var animator: ValueAnimator
     private val defaultDuration = 800 //default duration
     private var animationDuration: Long = defaultDuration.toLong()
 

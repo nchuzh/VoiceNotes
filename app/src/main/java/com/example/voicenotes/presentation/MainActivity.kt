@@ -1,26 +1,38 @@
-package com.example.voicenotes
+package com.example.voicenotes.presentation
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import com.example.voicenotes.R
 
 class MainActivity : AppCompatActivity() {
+
+    private var listening = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        view_indicator.startAnimation()
+        view_indicator.visibility = INVISIBLE
+
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            if (!listening) {
+                listening = true
+                view_indicator.startAnimation()
+                view_indicator.visibility = VISIBLE
+
+            } else {
+                listening = false
+                view_indicator.visibility = INVISIBLE
+            }
         }
     }
 
