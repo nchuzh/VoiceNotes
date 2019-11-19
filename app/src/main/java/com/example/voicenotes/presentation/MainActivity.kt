@@ -1,22 +1,33 @@
 package com.example.voicenotes.presentation
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-
+import androidx.appcompat.app.AppCompatActivity
+import com.example.voicenotes.ApplicationController
+import com.example.voicenotes.R
+import com.example.voicenotes.di.module.component.DaggerActivityComponent
+import com.example.voicenotes.domain.LoginToPastebinUseCase
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import com.example.voicenotes.R
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
     private var listening = false
 
+    @Inject
+    lateinit var loginUseCase: LoginToPastebinUseCase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        DaggerActivityComponent.builder()
+            .applicationComponent((applicationContext as ApplicationController).applicationComponent)
+            .build()
+            .inject(this)
+
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
@@ -24,6 +35,7 @@ class MainActivity : AppCompatActivity() {
 
 
         fab.setOnClickListener { view ->
+            loginUseCase.execute("nchuzh", "5yx8ckm4")
             if (!listening) {
                 listening = true
                 view_indicator.startAnimation()
@@ -33,6 +45,7 @@ class MainActivity : AppCompatActivity() {
                 listening = false
                 view_indicator.visibility = INVISIBLE
             }
+
         }
     }
 

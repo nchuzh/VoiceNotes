@@ -1,5 +1,6 @@
 package com.example.voicenotes.di.module
 
+import com.example.voicenotes.network.API_BASE_URL
 import com.example.voicenotes.network.service.PastebinService
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -14,13 +15,13 @@ import javax.inject.Singleton
 
 @Module
 class NetworkModule {
-    val API_BASE_URL = ""
 
     @Singleton
     @Provides
     fun provideRetrofit(): Retrofit {
         val okHttpClient = OkHttpClient().newBuilder()
             .addInterceptor(HttpLoggingInterceptor())
+            //.addInterceptor(NetworkInterceptor())
             .cache(null)
             .build()
 

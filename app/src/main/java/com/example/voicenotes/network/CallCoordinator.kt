@@ -7,11 +7,12 @@ import java.net.ConnectException
 import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import javax.inject.Inject
 import javax.inject.Singleton
 import javax.net.ssl.SSLHandshakeException
 
 @Singleton
-class CallCoordinator {
+class CallCoordinator @Inject constructor() {
 
     @Throws(
         ConnectException::class, SocketTimeoutException::class,

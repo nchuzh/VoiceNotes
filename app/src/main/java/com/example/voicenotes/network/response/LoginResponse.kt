@@ -1,3 +1,3 @@
 package com.example.voicenotes.network.response
 
-data class GetDataResponse(val data: String)
+data class LoginResponse(val token: String)

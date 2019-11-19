@@ -1,0 +1,15 @@
+package com.example.voicenotes.di.module
+
+import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
+import com.example.voicenotes.di.module.qualifier.ActivityContext
+import dagger.Module
+import dagger.Provides
+
+@Module
+class ActivitiesModule(private val activity: AppCompatActivity) {
+
+    @Provides
+    @ActivityContext
+    fun provideContext(): Context = activity
+}

@@ -1,12 +1,14 @@
 package com.example.voicenotes.network.service
 
-import com.example.voicenotes.network.response.GetDataResponse
+import com.example.voicenotes.network.PATH_LOGIN
+import com.example.voicenotes.network.request.LoginRequest
+import com.example.voicenotes.network.response.LoginResponse
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Path
+import retrofit2.http.Body
+import retrofit2.http.POST
 
 
 interface PastebinService {
-    @GET("url")
-    fun getData(@Path("id") id: String): Call<GetDataResponse>
+    @POST(PATH_LOGIN)
+    fun login(@Body loginRequest: LoginRequest): Call<LoginResponse>
 }
