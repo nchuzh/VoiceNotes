@@ -1,6 +1,7 @@
 package com.example.voicenotes.di.module
 
 import com.example.voicenotes.network.API_BASE_URL
+import com.example.voicenotes.network.NetworkInterceptor
 import com.example.voicenotes.network.service.PastebinService
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -11,7 +12,9 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import timber.log.Timber
 import javax.inject.Singleton
+
 
 @Module
 class NetworkModule {
@@ -19,9 +22,15 @@ class NetworkModule {
     @Singleton
     @Provides
     fun provideRetrofit(): Retrofit {
+        val loggingInterceptor = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
+            override fun log(message: String) {
+                Timber.tag("OkHttp").d(message)
+            }
+        })
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         val okHttpClient = OkHttpClient().newBuilder()
-            .addInterceptor(HttpLoggingInterceptor())
-            //.addInterceptor(NetworkInterceptor())
+            .addInterceptor(loggingInterceptor)
+            .addInterceptor(NetworkInterceptor())
             .cache(null)
             .build()
 

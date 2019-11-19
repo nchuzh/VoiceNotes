@@ -3,9 +3,9 @@ package com.example.voicenotes.data.repository
 import com.example.voicenotes.domain.repository.PastebinRepositoryInterface
 import com.example.voicenotes.network.API_DEV_KEY
 import com.example.voicenotes.network.CallCoordinator
-import com.example.voicenotes.network.request.LoginRequest
 import com.example.voicenotes.network.service.PastebinService
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -19,8 +19,8 @@ class PastebinRepository @Inject constructor(
 
     override fun getLoginToken(login: String, password: String): Single<String> {
         return Single.fromCallable {
-            callCoordinator.execute(service.login(LoginRequest(API_DEV_KEY, login, password)))
-        }.map { it.token }
+            callCoordinator.execute(service.login(API_DEV_KEY, login, password))
+        }.subscribeOn(Schedulers.io()).map { it.token }
     }
 
     override fun saveLoginToken(token: String) {

@@ -5,18 +5,29 @@ import okhttp3.Request
 import okhttp3.Response
 
 class NetworkInterceptor : Interceptor {
+
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
-        val newRequest = getRequest(request)
+        val newRequest = getBaseRequest(
+            request, null
+        )
 
         return chain.proceed(newRequest)
     }
 
-    fun getRequest(request: Request): Request {
-        val newRequestBuilder = request.newBuilder()
+    fun getBaseRequest(oldRequest: Request, overrideHeaders: Map<String, String>? = null): Request {
+        val newRequestBuilder = oldRequest.newBuilder()
 
-        with (newRequestBuilder) {
+        //Add common headers for APIs
+        with(newRequestBuilder) {
             addHeader("api_dev_key", API_DEV_KEY)
+
+            overrideHeaders?.let {
+                overrideHeaders.entries.forEach {
+                    removeHeader(it.key)
+                    addHeader(it.key, it.value)
+                }
+            }
         }
 
         return newRequestBuilder.build()
