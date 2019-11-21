@@ -2,7 +2,7 @@ package com.example.voicenotes.di.module
 
 import android.app.Application
 import android.content.Context
-import com.example.voicenotes.di.module.qualifier.AppContext
+import com.example.voicenotes.di.qualifier.AppContext
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

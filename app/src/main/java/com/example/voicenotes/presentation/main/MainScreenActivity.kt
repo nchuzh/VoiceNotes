@@ -1,23 +1,20 @@
-package com.example.voicenotes.presentation
+package com.example.voicenotes.presentation.main
 
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import androidx.appcompat.app.AppCompatActivity
-import com.example.voicenotes.ApplicationController
 import com.example.voicenotes.R
-import com.example.voicenotes.di.module.ActivitiesModule
-import com.example.voicenotes.di.module.component.DaggerActivityComponent
-import com.example.voicenotes.domain.LoginToPastebinUseCase
+import com.example.voicenotes.domain.usecase.LoginToPastebinUseCase
+import com.example.voicenotes.presentation.base.BaseActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainScreenActivity : BaseActivity() {
 
     private var listening = false
 
@@ -26,17 +23,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DaggerActivityComponent.builder()
-            .applicationComponent((applicationContext as ApplicationController).applicationComponent)
-            .activitiesModule(ActivitiesModule(this))
-            .build()
-            .inject(this)
+        getActivityComponent().inject(this)
 
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
         view_indicator.visibility = INVISIBLE
-
 
         fab.setOnClickListener { view ->
             loginUseCase.execute("", "")

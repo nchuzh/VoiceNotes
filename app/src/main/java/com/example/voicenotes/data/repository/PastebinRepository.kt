@@ -1,7 +1,7 @@
 package com.example.voicenotes.data.repository
 
+import com.example.voicenotes.BuildConfig
 import com.example.voicenotes.domain.repository.PastebinRepositoryInterface
-import com.example.voicenotes.network.API_DEV_KEY
 import com.example.voicenotes.network.CallCoordinator
 import com.example.voicenotes.network.service.PastebinService
 import io.reactivex.Single
@@ -19,8 +19,8 @@ class PastebinRepository @Inject constructor(
 
     override fun getLoginToken(login: String, password: String): Single<String> {
         return Single.fromCallable {
-            callCoordinator.execute(service.login(API_DEV_KEY, login, password))
-        }.subscribeOn(Schedulers.io()).map { it.token }
+            callCoordinator.execute(service.login(BuildConfig.apikey, login, password))
+        }.subscribeOn(Schedulers.io()).map { it }
     }
 
     override fun saveLoginToken(token: String) {
