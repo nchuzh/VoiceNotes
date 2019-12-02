@@ -31,6 +31,7 @@ class MainScreenActivity : BaseActivity() {
         view_indicator.visibility = INVISIBLE
 
         fab.setOnClickListener { view ->
+            //To be completed, take login/password from UI
             loginUseCase.execute("", "")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

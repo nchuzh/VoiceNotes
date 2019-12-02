@@ -6,14 +6,21 @@ import io.reactivex.Completable
 import javax.inject.Inject
 
 class LoginToPastebinUseCase @Inject constructor(val pastebinRepository: PastebinRepository) {
+    companion object {
+        val ErrorString = "Bad API"
+    }
 
     fun execute(login: String, password: String): Completable {
         return pastebinRepository.getLoginToken(login, password).map {
-            if (it.contains("Bad API")) {
+            if (hasErrors(it)) {
                 throw NetworkException(it)
             } else {
                 pastebinRepository.saveLoginToken(it)
             }
         }.toCompletable()
+    }
+
+    private fun hasErrors(response: String): Boolean {
+        return response.contains(ErrorString)
     }
 }
