@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class ActivitiesModule(private val activity: AppCompatActivity) {
+class ActivityModule(private val activity: AppCompatActivity) {
 
     @Provides
     @ActivityContext

@@ -1,7 +1,7 @@
 package com.example.voicenotes.di.component
 
 import android.content.Context
-import com.example.voicenotes.di.module.ActivitiesModule
+import com.example.voicenotes.di.module.ActivityModule
 import com.example.voicenotes.di.qualifier.ActivityContext
 import com.example.voicenotes.di.scope.ActivityScope
 import com.example.voicenotes.presentation.base.BaseActivity
@@ -10,7 +10,7 @@ import dagger.Component
 
 
 @ActivityScope
-@Component(dependencies = [ApplicationComponent::class], modules = [ActivitiesModule::class])
+@Component(dependencies = [ApplicationComponent::class], modules = [ActivityModule::class])
 interface ActivityComponent : SingletonComponent {
 
     @ActivityContext

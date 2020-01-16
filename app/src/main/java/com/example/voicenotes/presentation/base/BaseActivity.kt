@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.voicenotes.ApplicationController
 import com.example.voicenotes.di.component.ActivityComponent
 import com.example.voicenotes.di.component.DaggerActivityComponent
-import com.example.voicenotes.di.module.ActivitiesModule
+import com.example.voicenotes.di.module.ActivityModule
 
 open class BaseActivity : AppCompatActivity() {
 
@@ -18,7 +18,7 @@ open class BaseActivity : AppCompatActivity() {
     fun getActivityComponent(): ActivityComponent {
         return DaggerActivityComponent.builder()
             .applicationComponent((applicationContext as ApplicationController).applicationComponent)
-            .activitiesModule(ActivitiesModule(this))
+            .activityModule(ActivityModule(this))
             .build()
     }
 }

@@ -10,6 +10,7 @@ buildscript {
         retrofit_version = '2.5.0'
         okhttp_version = '3.4.1'
         dagger_version = '2.24'
+        navigation_version = '2.0.0'
     }
 
     repositories {

@@ -1,71 +1,89 @@
 package com.example.voicenotes.presentation.main
 
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.onNavDestinationSelected
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.voicenotes.R
-import com.example.voicenotes.domain.usecase.LoginToPastebinUseCase
-import com.example.voicenotes.presentation.base.BaseActivity
-import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
-import timber.log.Timber
-import javax.inject.Inject
 
-class MainScreenActivity : BaseActivity() {
-
-    private var listening = false
-
-    @Inject
-    lateinit var loginUseCase: LoginToPastebinUseCase
+class MainScreenActivity : AppCompatActivity(), AppBarConfiguration.OnNavigateUpListener {
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getActivityComponent().inject(this)
-
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        view_indicator.visibility = INVISIBLE
+        initNavigation()
+    }
 
-        fab.setOnClickListener { view ->
-            //To be completed, take login/password from UI
-            loginUseCase.execute("", "")
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    {
-                        Timber.d("Success")
-                    }, {
-                        Timber.d(it)
-                    })
-            if (!listening) {
-                listening = true
-                view_indicator.startAnimation()
-                view_indicator.visibility = VISIBLE
-
-            } else {
-                listening = false
-                view_indicator.visibility = INVISIBLE
+    private fun initNavigation() {
+        val host: NavHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment? ?: return
+        val navController = host.navController
+        appBarConfiguration = AppBarConfiguration(navController.graph)
+        setupNavigation(navController)
+        setupActionBar(navController, appBarConfiguration)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            val dest: String = try {
+                resources.getResourceName(destination.id)
+            } catch (e: Resources.NotFoundException) {
+                Integer.toString(destination.id)
             }
-
+            Toast.makeText(
+                this@MainScreenActivity, "Navigated to $dest",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
+    private fun setupActionBar(navController: NavController, appBarConfig: AppBarConfiguration) {
+        setupActionBarWithNavController(navController, appBarConfig)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+    private fun setupNavigation(navController: NavController) {
+        nav_view?.setupWithNavController(navController)
+
+        appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.fragment1, R.id.fragment2),
+            drawer_layout
+        )
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val retValue = super.onCreateOptionsMenu(menu)
+        if (nav_view == null) {
+            menuInflater.inflate(R.menu.activity_main_drawer, menu)
+            return true
+        }
+        return retValue
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item!!.itemId) {
+            android.R.id.home ->
+                drawer_layout.openDrawer(GravityCompat.START)
+        }
+        return item.onNavDestinationSelected(findNavController(R.id.nav_host_fragment))
+                || super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+            drawer_layout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
         }
     }
 }
