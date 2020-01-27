@@ -3,19 +3,35 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/nav_graph"
-            app:startDestination="@id/fragment1">
+            app:startDestination="@id/fragment_record">
     <fragment
-            android:id="@+id/fragment1"
+            android:id="@+id/fragment_record"
             android:name="com.example.voicenotes.presentation.record.RecordFragment"
-            android:label="fragment_fragment1"
+            android:label="Record"
             tools:layout="@layout/layout_record">
         <action
-                android:id="@+id/action_fragment1_to_fragment2"
-                app:destination="@id/fragment2"/>
+                android:id="@+id/action_record_to_settings"
+                app:destination="@id/fragment_settings"/>
+        <action
+                android:id="@+id/action_record_to_all_notes"
+                app:destination="@id/fragment_all_notes"/>
+        <action
+                android:id="@+id/action_note_to_success"
+                app:destination="@id/fragment_pastebin"/>
     </fragment>
     <fragment
-            android:id="@+id/fragment2"
+            android:id="@+id/fragment_settings"
             android:name="com.example.voicenotes.presentation.settings.SettingsFragment"
-            android:label="fragment_fragment2"
+            android:label="Settings"
             tools:layout="@layout/layout_settings"/>
+    <fragment
+            android:id="@+id/fragment_all_notes"
+            android:name="com.example.voicenotes.presentation.allnotes.AllNotesFragment"
+            android:label="All notes"
+            tools:layout="@layout/layout_all_notes"/>
+    <fragment
+            android:id="@+id/fragment_pastebin"
+            android:name="com.example.voicenotes.presentation.pastebin.PastebinFragment"
+            android:label="Success"
+            tools:layout="@layout/layout_pastebin"/>
 </navigation>

@@ -4,10 +4,13 @@
       tools:showIn="navigation_view">
     <group android:checkableBehavior="single">
         <item
-                android:id="@+id/fragment1"
-                android:title="Record"/>
+                android:id="@+id/fragment_record"
+                android:title="Note"/>
         <item
-                android:id="@+id/fragment2"
+                android:id="@+id/fragment_all_notes"
+                android:title="All notes"/>
+        <item
+                android:id="@+id/fragment_settings"
                 android:title="@string/action_settings"/>
     </group>
 </menu>

@@ -56,7 +56,7 @@ class MainScreenActivity : AppCompatActivity(), AppBarConfiguration.OnNavigateUp
         nav_view?.setupWithNavController(navController)
 
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.fragment1, R.id.fragment2),
+            setOf(R.id.fragment_record, R.id.fragment_settings),
             drawer_layout
         )
     }

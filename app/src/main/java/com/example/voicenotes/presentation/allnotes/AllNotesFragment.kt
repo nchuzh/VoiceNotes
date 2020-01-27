@@ -1,3 +1,5 @@
 package com.example.voicenotes.presentation.allnotes
 
-class AllNotesFragment
+import androidx.fragment.app.Fragment
+
+class AllNotesFragment : Fragment()
